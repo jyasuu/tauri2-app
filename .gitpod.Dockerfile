@@ -5,7 +5,7 @@ FROM gitpod/workspace-full-vnc
 # install-packages is a wrapper for `apt` that helps skip a few commands in the docker env.
 
 RUN sudo apt-get update && \
-    sudo DEBIAN_FRONTEND=noninteractive  apt-get install -y libwebkit2gtk-4.0-dev \
+    sudo DEBIAN_FRONTEND=noninteractive  apt-get install -y libwebkit2gtk-4.1-dev \
     build-essential \
     curl \
     wget \
@@ -13,6 +13,7 @@ RUN sudo apt-get update && \
     libssl-dev \
     libgtk-3-dev \
     libayatana-appindicator3-dev \
-    librsvg2-dev
+    librsvg2-dev \
+    libsoup-3.0-dev
 
     
