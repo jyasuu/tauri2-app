@@ -22,3 +22,4 @@ vscode:
         - Vue.volar
         - tauri-apps.tauri-vscode
         - rust-lang.rust-analyzer
+        - saoudrizwan.claude-dev
