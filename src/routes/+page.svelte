@@ -1,5 +1,67 @@
 <script lang="ts">
-  import { invoke } from "@tauri-apps/api/core";
+  import { invoke, Channel } from "@tauri-apps/api/core";
+  import { listen } from '@tauri-apps/api/event';
+  import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
+  import { once } from '@tauri-apps/api/event';
+
+  type DownloadEvent =
+    | {
+        event: 'started';
+        data: {
+          url: string;
+          downloadId: number;
+          contentLength: number;
+        };
+      }
+    | {
+        event: 'progress';
+        data: {
+          downloadId: number;
+          chunkLength: number;
+        };
+      }
+    | {
+        event: 'finished';
+        data: {
+          downloadId: number;
+        };
+      };
+
+  const onEvent = new Channel<DownloadEvent>();
+  onEvent.onmessage = (message) => {
+    console.log(`got download event ${message.event}`);
+  };
+
+  once('ready', async (event) => {
+      
+    await invoke('download', {
+      url: 'https://raw.githubusercontent.com/tauri-apps/tauri/dev/crates/tauri-schema-generator/schemas/config.schema.json',
+      onEvent,
+    });
+      
+    const unlisten = await listen('download-started', (event) => {});
+    unlisten();
+    
+  });
+
+
+  type DownloadStarted = {
+    url: string;
+    downloadId: number;
+    contentLength: number;
+  };
+
+  listen<DownloadStarted>('download-started', (event) => {
+    console.log(
+      `downloading ${event.payload.contentLength} bytes from ${event.payload.url}`
+    );
+  });
+
+  const appWebview = getCurrentWebviewWindow();
+  appWebview.listen<string>('logged-in', (event) => {
+    localStorage.setItem('session-token', event.payload);
+  });
+  appWebview.once('ready', () => {});
 
   let name = $state("");
   let greetMsg = $state("");
