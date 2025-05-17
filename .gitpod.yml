@@ -4,12 +4,12 @@ image:
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
   - name: install dev env
-    init: |
-        cargo install create-tauri-app --locked
-        cargo install tauri-cli --version '^2.0.0' --locked
-        curl -fsSL https://deno.land/install.sh | sh
+  - init: |
+        rustup update 1.85.1
+        rustup default 1.85.1
     command: |
-        deno task tauri dev
+        rustup update 1.85.1
+        rustup default 1.85.1
 
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
