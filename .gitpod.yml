@@ -8,6 +8,8 @@ tasks:
         cargo install create-tauri-app --locked
         cargo install tauri-cli --version '^2.0.0' --locked
         curl -fsSL https://deno.land/install.sh | sh
+        export PATH=$PATH:/home/gitpod/.deno/bin/
+        deno i
     command: |
         deno task tauri dev
 
